@@ -1,5 +1,7 @@
 import socks
 import socket
+from stem.control import Controller
+from stem import Signal
 
 
 class Tor(object):
@@ -21,4 +23,6 @@ class Tor(object):
 
     def change_relay(self):
         """change Tor relay to obtain new ip"""
-        pass
+        with Controller.from_port(port=self.control_port) as controller:
+            controller.authenticate(self.control_password)
+            controller.signal(Signal.NEWNYM)
