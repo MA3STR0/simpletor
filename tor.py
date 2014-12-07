@@ -1,7 +1,9 @@
 import socks
 import socket
+import json
 from stem.control import Controller
 from stem import Signal
+from urllib2 import urlopen
 
 
 class Tor(object):
@@ -26,3 +28,10 @@ class Tor(object):
         with Controller.from_port(port=self.control_port) as controller:
             controller.authenticate(self.control_password)
             controller.signal(Signal.NEWNYM)
+
+    def print_ip():
+        """print ip for debug"""
+        json_str = urlopen('http://ip-api.com/json').read().decode('UTF-8')
+        ip_dict = json.loads(json_str)
+        for key, value in ip_dict.items():
+            print("%s: %s" % (key, value))
