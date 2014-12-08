@@ -33,5 +33,7 @@ class Tor(object):
         """print ip for debug"""
         json_str = urlopen('http://ip-api.com/json').read().decode('UTF-8')
         ip_dict = json.loads(json_str)
+        sections = ('city', 'country', 'isp', 'query')
         for key, value in ip_dict.items():
-            print("%s: %s" % (key, value))
+            if key in sections:
+                print("%s: %s" % (key, value))
