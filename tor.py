@@ -29,6 +29,7 @@ class Tor(object):
             controller.authenticate(self.control_password)
             controller.signal(Signal.NEWNYM)
 
+    @staticmethod
     def print_ip():
         """print ip for debug"""
         json_str = urlopen('http://ip-api.com/json').read().decode('UTF-8')
