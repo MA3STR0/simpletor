@@ -3,7 +3,10 @@ import socket
 import json
 from stem.control import Controller
 from stem import Signal
-from urllib2 import urlopen
+try:
+    from urllib2 import urlopen    # python2
+except ImportError:
+    from urllib.request import urlopen  # python3
 
 
 class Tor(object):
