@@ -11,11 +11,12 @@ except ImportError:
 
 class Tor(object):
     """Tor class for socks proxy and controller"""
-    def __init__(self, socks_port=9050, control_port=9051, control_password=""):
+    def __init__(self, socks_port=9050, control_port=9051, control_pwd=""):
         self.socks_port = socks_port
         self.control_port = control_port
         self.control_password = control_password
         self.default_socket = socket.socket
+        self.check_control()
 
     def connect(self):
         """connect to Tor socks proxy"""
@@ -32,8 +33,14 @@ class Tor(object):
             controller.authenticate(self.control_password)
             controller.signal(Signal.NEWNYM)
 
+    def check_control(self):
+        """try controlling interface"""
+        with Controller.from_port(port=self.control_port) as controller:
+            controller.authenticate(self.control_password)
+            print("Tor authentication successfull")
+
     @staticmethod
-    def print_ip():
+    def check_ip():
         """print ip for debug"""
         json_str = urlopen('http://ip-api.com/json').read().decode('UTF-8')
         ip_dict = json.loads(json_str)
