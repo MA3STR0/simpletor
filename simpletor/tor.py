@@ -14,7 +14,7 @@ class Tor(object):
     def __init__(self, socks_port=9050, control_port=9051, control_pwd=""):
         self.socks_port = socks_port
         self.control_port = control_port
-        self.control_password = control_password
+        self.control_pwd= control_pwd
         self.default_socket = socket.socket
         self.check_control()
 
@@ -30,13 +30,13 @@ class Tor(object):
     def change_relay(self):
         """change Tor relay to obtain new ip"""
         with Controller.from_port(port=self.control_port) as controller:
-            controller.authenticate(self.control_password)
+            controller.authenticate(self.control_pwd)
             controller.signal(Signal.NEWNYM)
 
     def check_control(self):
         """try controlling interface"""
         with Controller.from_port(port=self.control_port) as controller:
-            controller.authenticate(self.control_password)
+            controller.authenticate(self.control_pwd)
             print("Tor authentication successfull")
 
     @staticmethod
