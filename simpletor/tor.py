@@ -38,6 +38,7 @@ class Tor(object):
         with Controller.from_port(port=self.control_port) as controller:
             controller.authenticate(self.control_pwd)
             print("Tor authentication successfull")
+            return True
 
     @staticmethod
     def check_ip():
@@ -45,6 +46,6 @@ class Tor(object):
         json_str = urlopen('http://ip-api.com/json').read().decode('UTF-8')
         ip_dict = json.loads(json_str)
         sections = ('city', 'country', 'isp', 'query')
-        for key, value in ip_dict.items():
-            if key in sections:
-                print("%s: %s" % (key, value))
+        info = [value for key, value in ip_dict.items()
+                if key in sections and value]
+        return ', '.join(info)
